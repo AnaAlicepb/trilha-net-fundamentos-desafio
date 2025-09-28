@@ -1,0 +1,146 @@
+namespace DesafioFundamentos.Models
+{
+    // O quê: Declaração do namespace.
+    // Porquê: Organiza a classe Estacionamento dentro do contexto de Modelos do projeto,
+    //         evitando conflitos de nome com outras classes em projetos maiores.
+    public class Estacionamento
+    {
+        // O quê: Declaração de um campo (atributo) privado do tipo 'decimal'.
+        // Porquê: Armazena o preço fixo de entrada. 'private' restringe o acesso de fora da classe.
+        //         'decimal' é usado para cálculos monetários de alta precisão.
+        private decimal precoInicial = 0;
+        
+        // O quê: Declaração de um campo (atributo) privado do tipo 'decimal'.
+        // Porquê: Armazena o valor cobrado por cada hora de permanência.
+        private decimal precoPorHora = 0;
+        
+        // O quê: Declaração de um campo (atributo) privado do tipo 'List<string>'.
+        // Porquê: Armazena dinamicamente as placas dos veículos. 'string' é o tipo da placa.
+        //         'List' permite adicionar/remover veículos facilmente.
+        private List<string> veiculos = new List<string>();
+
+        // O quê: O Construtor da classe.
+        // Porquê: É o método que inicializa o objeto 'Estacionamento' quando ele é criado,
+        //         garantindo que os preços sejam definidos desde o início.
+        public Estacionamento(decimal precoInicial, decimal precoPorHora)
+        {
+            // O quê: Atribui o valor passado (parâmetro) ao atributo da classe.
+            // Porquê: Inicializa o atributo interno da classe com o preço inicial fornecido.
+            //         O 'this.' é necessário para diferenciar o parâmetro local do atributo da classe.
+            this.precoInicial = precoInicial;
+            
+            // O quê: Atribui o valor passado (parâmetro) ao atributo da classe.
+            // Porquê: Inicializa o atributo interno da classe com o preço por hora fornecido.
+            this.precoPorHora = precoPorHora;
+        }
+
+        // Método: Adiciona um veículo
+        public void AdicionarVeiculo()
+        {
+            // O quê: Exibe uma mensagem solicitando a placa.
+            // Porquê: Interage com o usuário no console.
+            Console.WriteLine("Digite a placa do veículo para estacionar:");
+            
+            // O quê: Declara uma variável 'placa' e armazena a entrada do usuário.
+            // Porquê: Lê a string digitada. O .ToUpper() converte para maiúsculas para
+            //         garantir a padronização e evitar erros na busca posterior.
+            string placa = Console.ReadLine().ToUpper(); 
+            
+            // O quê: Adiciona o valor da variável 'placa' à lista 'veiculos'.
+            // Porquê: Efetivamente estaciona o veículo na memória do sistema.
+            veiculos.Add(placa); 
+            
+            // O quê: Exibe uma mensagem de confirmação, usando interpolação de string ($"").
+            // Porquê: Informa ao usuário que a operação foi concluída.
+            Console.WriteLine($"Veículo com a placa {placa} estacionado com sucesso!");
+        }
+
+        // Método: Remove um veículo e calcula o valor
+        public void RemoverVeiculo()
+        {
+            // O quê: Exibe uma mensagem solicitando a placa para remoção.
+            // Porquê: Interage com o usuário.
+            Console.WriteLine("Digite a placa do veículo para remover:");
+
+            // O quê: Lê a placa e armazena na variável, também convertendo para maiúsculas.
+            // Porquê: Obtém a placa de remoção, mantendo a padronização para busca.
+            string placa = Console.ReadLine().ToUpper();
+
+            // O quê: Verifica se a lista 'veiculos' contém a placa digitada.
+            // Porquê: O método .Any() verifica se há algum item na lista (x) que seja igual à 'placa'.
+            //         É uma verificação crucial antes de tentar a remoção.
+            if (veiculos.Any(x => x == placa))
+            {
+                // O quê: Solicita a quantidade de horas.
+                // Porquê: Necessário para o cálculo do valor total.
+                Console.WriteLine("Digite a quantidade de horas que o veículo permaneceu estacionado:");
+
+                // O quê: Tenta converter a entrada do usuário em um número inteiro (int).
+                // Porquê: int.TryParse é um método seguro: retorna 'true' se a conversão for OK, e 'false' se falhar (evitando travamentos).
+                //         O 'out int horas' armazena o resultado da conversão.
+                //         O '|| horas <= 0' garante que o tempo seja um valor positivo.
+                if (!int.TryParse(Console.ReadLine(), out int horas) || horas <= 0)
+                {
+                    // O quê: Mensagem de erro e comando 'return'.
+                    // Porquê: Informa ao usuário que a entrada foi inválida e interrompe a execução do método, cancelando a remoção.
+                    Console.WriteLine("Valor de horas inválido. A cobrança requer um número positivo. Remoção cancelada.");
+                    return; 
+                }
+
+                // O quê: Variável do tipo decimal para armazenar o resultado da cobrança.
+                // Porquê: Realiza o cálculo da cobrança: Preço Fixo (precoInicial) + (Preço por Hora * Horas de permanência).
+                decimal valorTotal = precoInicial + (precoPorHora * horas); 
+
+                // O quê: Remove a placa correspondente da lista.
+                // Porquê: Finaliza a operação, liberando a vaga no sistema.
+                veiculos.Remove(placa); 
+
+                // O quê: Exibe o recibo final.
+                // Porquê: Informa o veículo removido e o valor total a ser pago. O ':F2' formata o decimal para duas casas (padrão monetário).
+                Console.WriteLine($"O veículo {placa} foi removido e o preço total foi de: R$ {valorTotal:F2}");
+            }
+            else
+            {
+                // O quê: Mensagem de erro.
+                // Porquê: Informa que a placa digitada não foi encontrada na lista de veículos estacionados.
+                Console.WriteLine("Desculpe, esse veículo não está estacionado aqui. Confira se digitou a placa corretamente");
+            }
+        }
+
+        // Método: Lista os veículos
+        public void ListarVeiculos()
+        {
+            // O quê: Verifica se há algum veículo na lista.
+            // Porquê: Garante que a listagem só ocorra se houver dados. Se for vazia, exibe a mensagem de "não há veículos".
+            if (veiculos.Any())
+            {
+                // O quê: Título da lista.
+                // Porquê: Informa ao usuário o que está sendo exibido.
+                Console.WriteLine("Os veículos estacionados são:");
+                
+                // O quê: Variável para numerar os veículos.
+                // Porquê: Oferece um índice amigável para o usuário.
+                int contador = 1;
+
+                // O quê: Inicia um loop de repetição.
+                // Porquê: O 'foreach' é ideal para percorrer todos os elementos de uma lista ou coleção.
+                foreach (string veiculo in veiculos)
+                {
+                    // O quê: Exibe o número do contador, um hífen, e o valor da placa (veiculo).
+                    // Porquê: Lista cada placa individualmente.
+                    Console.WriteLine($"{contador} - {veiculo}"); 
+                    
+                    // O quê: Incrementa o contador.
+                    // Porquê: Prepara o número de ordem para o próximo veículo.
+                    contador++; 
+                }
+            }
+            else
+            {
+                // O quê: Mensagem alternativa.
+                // Porquê: Informa que a lista está vazia.
+                Console.WriteLine("Não há veículos estacionados.");
+            }
+        }
+    }
+}

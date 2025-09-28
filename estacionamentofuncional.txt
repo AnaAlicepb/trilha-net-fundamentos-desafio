@@ -38,21 +38,21 @@ namespace DesafioFundamentos.Models
                 if (!int.TryParse(Console.ReadLine(), out int horas) || horas <= 0)
                 {
                     Console.WriteLine("Valor de horas inválido. A cobrança requer um número positivo. Remoção cancelada.");
-                    return;
+                    return; 
                 }
 
                 // Cálculo do Valor Total
-                decimal valorTotal = precoInicial + (precoPorHora * horas);
+                decimal valorTotal = precoInicial + (precoPorHora * horas); 
 
                 // --- NOVO FLUXO: MOSTRAR VALOR E PEDIR CONFIRMAÇÃO ---
                 Console.WriteLine($"O valor total a ser cobrado pelo período de {horas} hora(s) é de: R$ {valorTotal:F2}");
                 Console.WriteLine("Deseja confirmar a remoção do veículo? (S/N)");
-
+                
                 string confirmacao = Console.ReadLine().ToUpper();
 
                 if (confirmacao == "S")
                 {
-                    veiculos.Remove(placa);
+                    veiculos.Remove(placa); 
                     Console.WriteLine($"O veículo {placa} foi removido e o preço total foi de: R$ {valorTotal:F2}");
                 }
                 else
@@ -72,11 +72,11 @@ namespace DesafioFundamentos.Models
             if (veiculos.Any())
             {
                 Console.WriteLine("Os veículos estacionados são:");
-
+                
                 int contador = 1;
                 foreach (string veiculo in veiculos)
                 {
-                    Console.WriteLine($"{contador} - {veiculo}");
+                    Console.WriteLine($"{contador} - {veiculo}"); 
                     contador++;
                 }
             }

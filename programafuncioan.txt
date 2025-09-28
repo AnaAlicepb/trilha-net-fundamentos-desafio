@@ -1,40 +1,17 @@
-﻿using DesafioFundamentos.Models;
+using DesafioFundamentos.Models;
 
 // Coloca o encoding para UTF8 para exibir acentuação
 Console.OutputEncoding = System.Text.Encoding.UTF8;
 
 decimal precoInicial = 0;
 decimal precoPorHora = 0;
-string entradaUsuario; // Usada para ler a entrada antes de tentar converter
 
-Console.WriteLine("Seja bem vindo ao sistema de estacionamento!\n");
+Console.WriteLine("Seja bem vindo ao sistema de estacionamento!\n" +
+                  "Digite o preço inicial:");
+precoInicial = Convert.ToDecimal(Console.ReadLine());
 
-// --- INÍCIO DA VALIDAÇÃO ROBUSTA DO PREÇO INICIAL ---
-Console.WriteLine("Digite o preço inicial (fixo para entrada):");
-do
-{
-    entradaUsuario = Console.ReadLine();
-    // Tenta converter para decimal. Se falhar ou o valor for negativo, repete.
-    if (!decimal.TryParse(entradaUsuario, out precoInicial) || precoInicial < 0)
-    {
-        Console.WriteLine("Valor inválido ou negativo! Por favor, digite o preço inicial novamente:");
-    }
-} while (precoInicial < 0);
-// --- FIM DA VALIDAÇÃO ROBUSTA DO PREÇO INICIAL ---
-
-// --- INÍCIO DA VALIDAÇÃO ROBUSTA DO PREÇO POR HORA ---
 Console.WriteLine("Agora digite o preço por hora:");
-do
-{
-    entradaUsuario = Console.ReadLine();
-    // Tenta converter para decimal. Se falhar ou o valor for negativo, repete.
-    if (!decimal.TryParse(entradaUsuario, out precoPorHora) || precoPorHora < 0)
-    {
-        Console.WriteLine("Valor inválido ou negativo! Por favor, digite o preço por hora novamente:");
-    }
-} while (precoPorHora < 0);
-// --- FIM DA VALIDAÇÃO ROBUSTA DO PREÇO POR HORA ---
-
+precoPorHora = Convert.ToDecimal(Console.ReadLine());
 
 // Instancia a classe Estacionamento, já com os valores obtidos anteriormente
 Estacionamento es = new Estacionamento(precoInicial, precoPorHora);
